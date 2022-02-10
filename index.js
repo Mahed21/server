@@ -2,6 +2,7 @@ const express = require('express')
 const { MongoClient } = require('mongodb');
 const app = express()
 const cors=require('cors');
+const ObjectId=require('mongodb').ObjectId;
 const port = process.env.PORT || 5000
 require('dotenv').config()
 
@@ -25,6 +26,15 @@ async function run() {
        const cursor=userCollection.find ({})
        const users=await cursor.toArray();
        res.send(users);
+     })
+
+     //get single details of rent
+     app.get('/homes/:id', async (req,res)=>
+     {
+       const id =req.params.id;
+       const query={_id: ObjectId(id)};
+       const user =await userCollection.findOne(query);
+       res.send(user);
      })
     
   
