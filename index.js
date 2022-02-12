@@ -36,6 +36,15 @@ async function run() {
        const user =await userCollection.findOne(query);
        res.send(user);
      })
+
+     app.post('/homes', async (req,res)=>
+     {
+       
+       const newUser = req.body;
+       const result = await userCollection.insertOne(newUser);
+        console.log('hitting the post',req.body);
+        res.json(result);
+     })
     
   
      
