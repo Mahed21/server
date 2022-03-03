@@ -18,6 +18,8 @@ async function run() {
       await client.connect();
       const database = client.db("yourhome");
       const userCollection = database.collection("home");
+      const userMemberCollection = database.collection("member");
+      
      console.log('connected');
     
      //get api
@@ -36,12 +38,28 @@ async function run() {
        const user =await userCollection.findOne(query);
        res.send(user);
      })
-
+    //post rent from client side to database
      app.post('/homes', async (req,res)=>
      {
        
        const newUser = req.body;
        const result = await userCollection.insertOne(newUser);
+        console.log('hitting the post',req.body);
+        res.json(result);
+     })
+     //get all member from database
+     app.get('/member',async (req,res)=>
+     {
+       const cursor=userMemberCollection.find ({})
+       const users=await cursor.toArray();
+       res.send(users);
+     })
+     //post member from client side by admin
+     app.post('/member', async (req,res)=>
+     {
+       
+       const newUser = req.body;
+       const result = await userMemberCollection.insertOne(newUser);
         console.log('hitting the post',req.body);
         res.json(result);
      })
